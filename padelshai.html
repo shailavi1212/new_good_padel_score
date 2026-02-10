@@ -468,6 +468,150 @@ body::before {
   box-shadow: 0 0 15px rgba(244, 114, 182, 0.15);
 }
 
+/* End Set button */
+.btn-end-set {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(251, 191, 36, 0.15));
+  color: var(--neon-yellow);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 16px;
+}
+
+.btn-end-set:hover {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(251, 191, 36, 0.25));
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+}
+
+/* Set history display in admin */
+.set-history-display {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 240, 255, 0.06);
+}
+
+.set-history-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  margin-bottom: 10px;
+}
+
+.set-history-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.set-history-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius);
+  border: 1px solid rgba(0, 240, 255, 0.04);
+}
+
+.set-history-row .set-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  min-width: 30px;
+}
+
+.set-history-row .set-scores {
+  flex: 1;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 2px;
+}
+
+.set-history-row .set-scores .winner { color: var(--neon-green); }
+.set-history-row .set-scores .loser { color: var(--text-secondary); opacity: 0.6; }
+.set-history-row .set-scores .tb-info {
+  font-size: 10px;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  vertical-align: super;
+}
+
+.set-history-row .btn-remove-set {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.06);
+  color: var(--neon-red);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  opacity: 0.5;
+}
+
+.set-history-row .btn-remove-set:hover {
+  opacity: 1;
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.no-sets-msg {
+  font-size: 12px;
+  color: var(--text-secondary);
+  opacity: 0.4;
+  text-align: center;
+  padding: 8px;
+  font-style: italic;
+}
+
+/* Tiebreak score input for end set */
+.end-set-tb-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.end-set-tb-row label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.end-set-tb-row input {
+  width: 60px;
+  padding: 6px 8px;
+  background: var(--bg-input);
+  border: 1px solid rgba(0, 240, 255, 0.08);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+}
+
+.end-set-tb-row input:focus { border-color: var(--neon-cyan); }
+
 /* Reset button */
 .reset-section {
   display: flex;
@@ -619,6 +763,24 @@ body::before {
         <button class="btn-set minus" onclick="adjustSets('B', -1)">−</button>
         <span class="sets-display" id="setsBDisplay">0</span>
         <button class="btn-set" onclick="adjustSets('B', 1)">+</button>
+      </div>
+    </div>
+
+    <!-- END SET BUTTON -->
+    <button class="btn-end-set" onclick="endCurrentSet()">⚡ END SET — Save Score & Reset Games</button>
+
+    <!-- Tiebreak score for set (optional) -->
+    <div class="end-set-tb-row" id="endSetTbRow" style="display:none;">
+      <label>TB Score:</label>
+      <input type="number" id="tbScoreLoser" placeholder="0" min="0" max="99">
+      <span style="color:var(--text-secondary);font-size:11px;">(loser's tiebreak pts)</span>
+    </div>
+
+    <!-- SET HISTORY -->
+    <div class="set-history-display">
+      <div class="set-history-title">Completed Sets</div>
+      <div class="set-history-table" id="setHistoryTable">
+        <div class="no-sets-msg">No sets played yet</div>
       </div>
     </div>
   </div>
@@ -776,7 +938,8 @@ let matchData = {
   isTiebreak: false,
   serving: 'A',
   streamURL: '',
-  sponsors: { s1: '', s2: '', s3: '' }
+  sponsors: { s1: '', s2: '', s3: '' },
+  setHistory: []
 };
 
 // ══════════════════════════════════
@@ -796,6 +959,12 @@ function showToast(msg) {
 // ══════════════════════════════════
 function syncUI(data) {
   matchData = { ...matchData, ...data };
+  // Ensure setHistory is always an array
+  if (data.setHistory) {
+    matchData.setHistory = Object.values(data.setHistory);
+  } else {
+    matchData.setHistory = [];
+  }
 
   document.getElementById('teamAInput').value = data.teamA || '';
   document.getElementById('teamBInput').value = data.teamB || '';
@@ -810,6 +979,7 @@ function syncUI(data) {
 
   updateScoreUI();
   updateServeUI();
+  renderSetHistory();
 }
 
 function updateScoreUI() {
@@ -899,10 +1069,148 @@ function switchServe() {
   pushData({ serving: newServe }, `Serve → Team ${newServe}`);
 }
 
+// End current set: save games to set history, increment winner's sets, reset games & points
+function endCurrentSet() {
+  const gamesA = matchData.scoreA || 0;
+  const gamesB = matchData.scoreB || 0;
+
+  if (gamesA === 0 && gamesB === 0) {
+    showToast('No games to save');
+    return;
+  }
+
+  if (!confirm(`End set with score ${gamesA}-${gamesB}?`)) return;
+
+  const setEntry = { gamesA, gamesB };
+
+  // Check if this was a tiebreak set (optional: admin can enter loser's TB score)
+  const tbInput = document.getElementById('tbScoreLoser');
+  const tbVal = parseInt(tbInput.value);
+  if (!isNaN(tbVal) && tbVal >= 0) {
+    // Assign tiebreak score to the loser
+    if (gamesA > gamesB) {
+      setEntry.tiebreakB = tbVal;
+    } else if (gamesB > gamesA) {
+      setEntry.tiebreakA = tbVal;
+    }
+  }
+  tbInput.value = '';
+
+  // Add to set history
+  const history = matchData.setHistory || [];
+  history.push(setEntry);
+
+  // Determine who won the set and increment their sets count
+  let newSetsA = matchData.setsA || 0;
+  let newSetsB = matchData.setsB || 0;
+  if (gamesA > gamesB) {
+    newSetsA++;
+  } else if (gamesB > gamesA) {
+    newSetsB++;
+  }
+
+  // Push: save history, update sets, reset games and points
+  const updates = {
+    setHistory: history,
+    setsA: newSetsA,
+    setsB: newSetsB,
+    scoreA: 0,
+    scoreB: 0,
+    pointsA: 0,
+    pointsB: 0,
+    isTiebreak: false
+  };
+
+  pushData(updates, `Set ${history.length} saved: ${gamesA}-${gamesB}`);
+  renderSetHistory();
+}
+
+// Render set history in admin panel
+function renderSetHistory() {
+  const container = document.getElementById('setHistoryTable');
+  const history = matchData.setHistory || [];
+
+  if (history.length === 0) {
+    container.innerHTML = '<div class="no-sets-msg">No sets played yet</div>';
+    document.getElementById('endSetTbRow').style.display = 'none';
+    return;
+  }
+
+  // Show tiebreak input row
+  document.getElementById('endSetTbRow').style.display = 'flex';
+
+  let html = '';
+  for (let i = 0; i < history.length; i++) {
+    const s = history[i];
+    const gA = s.gamesA ?? 0;
+    const gB = s.gamesB ?? 0;
+    const aWon = gA > gB;
+    const bWon = gB > gA;
+    const teamA = matchData.teamA || 'A';
+    const teamB = matchData.teamB || 'B';
+
+    let scoreStr = '';
+    scoreStr += `<span class="${aWon ? 'winner' : 'loser'}">${gA}</span>`;
+    if (s.tiebreakA !== undefined && s.tiebreakA !== null) {
+      scoreStr += `<span class="tb-info">${s.tiebreakA}</span>`;
+    }
+    scoreStr += ` — `;
+    scoreStr += `<span class="${bWon ? 'winner' : 'loser'}">${gB}</span>`;
+    if (s.tiebreakB !== undefined && s.tiebreakB !== null) {
+      scoreStr += `<span class="tb-info">${s.tiebreakB}</span>`;
+    }
+
+    html += `<div class="set-history-row">
+      <span class="set-num">S${i + 1}</span>
+      <span class="set-scores">${scoreStr}</span>
+      <button class="btn-remove-set" onclick="removeSet(${i})" title="Remove set">✕</button>
+    </div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+// Remove a set from history
+function removeSet(index) {
+  if (!confirm(`Remove Set ${index + 1} from history?`)) return;
+
+  const history = matchData.setHistory || [];
+  const removed = history.splice(index, 1)[0];
+
+  // Adjust sets count: if the removed set had a winner, decrement their sets
+  let newSetsA = matchData.setsA || 0;
+  let newSetsB = matchData.setsB || 0;
+  if (removed) {
+    if ((removed.gamesA ?? 0) > (removed.gamesB ?? 0)) {
+      newSetsA = Math.max(0, newSetsA - 1);
+    } else if ((removed.gamesB ?? 0) > (removed.gamesA ?? 0)) {
+      newSetsB = Math.max(0, newSetsB - 1);
+    }
+  }
+
+  const updates = {
+    setHistory: history.length > 0 ? history : null,
+    setsA: newSetsA,
+    setsB: newSetsB
+  };
+
+  // Firebase doesn't store null well, use remove for empty
+  if (history.length === 0) {
+    matchRef.child('setHistory').remove();
+    delete updates.setHistory;
+  }
+
+  pushData(updates, `Set ${index + 1} removed`);
+  renderSetHistory();
+}
+
 // Resets
 function resetScores() {
-  if (!confirm('Reset scores and sets to 0?')) return;
-pushData({ scoreA: 0, scoreB: 0, setsA: 0, setsB: 0, pointsA: 0, pointsB: 0, isTiebreak: false }, 'Scores reset');
+  if (!confirm('Reset scores, sets, and set history to 0?')) return;
+  matchRef.child('setHistory').remove();
+  pushData({ scoreA: 0, scoreB: 0, setsA: 0, setsB: 0, pointsA: 0, pointsB: 0, isTiebreak: false }, 'Scores reset');
+  matchData.setHistory = [];
+  renderSetHistory();
 }
 
 function resetAll() {
@@ -918,7 +1226,7 @@ function resetAll() {
     streamURL: '',
     sponsors: { s1: '', s2: '', s3: '' }
   }).then(() => {
-    matchData = { teamA: '', teamB: '', playersA: '', playersB: '', scoreA: 0, scoreB: 0,pointsA: 0, pointsB: 0,isTiebreak: false , setsA: 0, setsB: 0, serving: 'A', streamURL: '', sponsors: { s1: '', s2: '', s3: '' } };
+    matchData = { teamA: '', teamB: '', playersA: '', playersB: '', scoreA: 0, scoreB: 0, pointsA: 0, pointsB: 0, isTiebreak: false, setsA: 0, setsB: 0, serving: 'A', streamURL: '', sponsors: { s1: '', s2: '', s3: '' }, setHistory: [] };
     syncUI(matchData);
     showToast('All data reset');
   });
