@@ -877,7 +877,6 @@ body::before {
   <!-- RESET -->
   <div class="reset-section">
     <button class="btn-reset" onclick="resetScores()">Reset Scores</button>
-    <button class="btn-reset" onclick="resetAll()">Reset All</button>
   </div>
 </div>
 
@@ -1213,24 +1212,7 @@ function resetScores() {
   renderSetHistory();
 }
 
-function resetAll() {
-  if (!confirm('Reset EVERYTHING? Teams, scores, stream, sponsors?')) return;
-  matchRef.set({
-    teamA: '', teamB: '',
-    playersA: '', playersB: '',
-    scoreA: 0, scoreB: 0,
-    setsA: 0, setsB: 0,
-    pointsA: 0, pointsB: 0,
-    isTiebreak: false,
-    serving: 'A',
-    streamURL: '',
-    sponsors: { s1: '', s2: '', s3: '' }
-  }).then(() => {
-    matchData = { teamA: '', teamB: '', playersA: '', playersB: '', scoreA: 0, scoreB: 0, pointsA: 0, pointsB: 0, isTiebreak: false, setsA: 0, setsB: 0, serving: 'A', streamURL: '', sponsors: { s1: '', s2: '', s3: '' }, setHistory: [] };
-    syncUI(matchData);
-    showToast('All data reset');
-  });
-}
+
 
 // ══════════════════════════════════
 // TEXT INPUT DEBOUNCED SYNC
