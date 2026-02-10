@@ -7,9 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   CSS RESET & VARIABLES
-   ═══════════════════════════════════════════ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
@@ -18,23 +15,19 @@
   --bg-secondary: #111827;
   --bg-panel: rgba(15, 20, 35, 0.85);
   --bg-glass: rgba(20, 28, 50, 0.6);
-
   --neon-cyan: #00f0ff;
   --neon-purple: #a855f7;
   --neon-pink: #f472b6;
   --neon-green: #22d3ee;
   --neon-yellow: #fbbf24;
   --neon-orange: #fb923c;
-
   --text-primary: #e2e8f0;
   --text-secondary: #94a3b8;
   --text-bright: #ffffff;
-
   --glow-cyan: 0 0 20px rgba(0, 240, 255, 0.4), 0 0 40px rgba(0, 240, 255, 0.15);
   --glow-purple: 0 0 20px rgba(168, 85, 247, 0.4), 0 0 40px rgba(168, 85, 247, 0.15);
   --glow-pink: 0 0 20px rgba(244, 114, 182, 0.4);
   --glow-green: 0 0 15px rgba(34, 211, 238, 0.3);
-
   --border-glow: 1px solid rgba(0, 240, 255, 0.2);
   --radius: 6px;
   --radius-lg: 12px;
@@ -48,9 +41,6 @@ html, body {
   overflow-x: hidden;
 }
 
-/* ═══════════════════════════════════════════
-   ANIMATED BACKGROUND
-   ═══════════════════════════════════════════ */
 body::before {
   content: '';
   position: fixed;
@@ -72,9 +62,6 @@ body::after {
   pointer-events: none;
 }
 
-/* ═══════════════════════════════════════════
-   LAYOUT
-   ═══════════════════════════════════════════ */
 .broadcast-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -85,9 +72,7 @@ body::after {
   gap: 0;
 }
 
-/* ═══════════════════════════════════════════
-   TOP BAR — SPONSORS
-   ═══════════════════════════════════════════ */
+/* SPONSOR BAR */
 .sponsor-bar {
   display: flex;
   align-items: center;
@@ -106,9 +91,7 @@ body::after {
 .sponsor-bar::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-purple), var(--neon-cyan), transparent);
   animation: shimmer 4s linear infinite;
@@ -133,8 +116,8 @@ body::after {
 }
 
 .sponsor-slot {
-  width: 200px;   /* was 160px */
-  height: 56px;   /* was 44px */
+  width: 200px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -178,9 +161,7 @@ body::after {
   text-transform: uppercase;
 }
 
-/* ═══════════════════════════════════════════
-   VIDEO PLAYER AREA
-   ═══════════════════════════════════════════ */
+/* VIDEO PLAYER */
 .video-wrapper {
   position: relative;
   width: 100%;
@@ -243,9 +224,7 @@ body::after {
   50% { box-shadow: 0 0 40px rgba(0, 240, 255, 0.25); }
 }
 
-/* ═══════════════════════════════════════════
-   SCOREBOARD HUD — TENNIS-STYLE ROWS
-   ═══════════════════════════════════════════ */
+/* SCOREBOARD HUD */
 .scoreboard-hud {
   position: relative;
   display: flex;
@@ -260,9 +239,7 @@ body::after {
 .scoreboard-hud::before {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
   height: 2px;
   background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink), var(--neon-cyan));
   background-size: 300% 100%;
@@ -274,7 +251,7 @@ body::after {
   100% { background-position: 300% 0%; }
 }
 
-/* Column headers row */
+/* Column headers */
 .score-header {
   display: flex;
   align-items: center;
@@ -301,6 +278,14 @@ body::after {
 .score-header .col-label.pts-label {
   color: var(--neon-yellow);
   opacity: 0.6;
+}
+
+.score-header .col-label.set-history-label {
+  width: 44px;
+  color: var(--text-secondary);
+  opacity: 0.35;
+  font-size: 7px;
+  letter-spacing: 1px;
 }
 
 /* Team row */
@@ -350,7 +335,7 @@ body::after {
   50% { box-shadow: 0 0 12px rgba(251, 191, 36, 0.8), 0 0 30px rgba(251, 191, 36, 0.4); transform: scale(1.2); }
 }
 
-/* Team name & players cell */
+/* Name cell */
 .name-cell {
   flex: 1;
   display: flex;
@@ -424,19 +409,16 @@ body::after {
   100% { transform: scale(1); }
 }
 
-/* Sets cell */
 .score-cell.sets-cell .val {
   font-size: 22px;
   color: var(--neon-green);
 }
 
-/* Games cell */
 .score-cell.games-cell .val {
   font-size: 30px;
   color: var(--text-bright);
 }
 
-/* Points cell */
 .score-cell.pts-cell {
   background: rgba(251, 191, 36, 0.05);
 }
@@ -451,23 +433,61 @@ body::after {
   text-shadow: 0 0 12px rgba(251, 191, 36, 0.4);
 }
 
-/* Match status badge */
-.match-badge {
+/* SET HISTORY CELLS */
+.set-history-cell {
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.set-history-cell::before {
+  content: '';
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 1px;
+  background: rgba(0, 240, 255, 0.05);
 }
 
-@keyframes liveDot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+.set-history-cell .set-score {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  line-height: 1;
+  position: relative;
 }
 
-/* ═══════════════════════════════════════════
-   WATERMARK / BRANDING
-   ═══════════════════════════════════════════ */
+.set-history-cell .set-score .tb-sup {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  position: absolute;
+  top: -4px;
+  right: -9px;
+}
+
+.set-history-cell.set-won .set-score {
+  color: var(--text-bright);
+  opacity: 1;
+}
+
+.set-history-cell {
+  animation: setFadeIn 0.4s ease-out;
+}
+
+@keyframes setFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Footer */
 .broadcast-footer {
   display: flex;
   justify-content: center;
@@ -483,9 +503,7 @@ body::after {
   color: var(--text-secondary);
 }
 
-/* ═══════════════════════════════════════════
-   LOADING STATE
-   ═══════════════════════════════════════════ */
+/* Loading */
 .loading-overlay {
   position: fixed;
   inset: 0;
@@ -524,16 +542,12 @@ body::after {
   text-transform: uppercase;
 }
 
-/* ═══════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════ */
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .broadcast-container { padding: 6px; }
-
   .sponsor-bar { gap: 12px; padding: 8px 12px; min-height: 48px; }
   .sponsor-bar .label { display: none; }
   .sponsor-slot { width: 100px; height: 34px; }
-
   .team-name { font-size: 12px; letter-spacing: 1px; }
   .player-names { font-size: 10px; }
   .score-cell { width: 48px; }
@@ -543,6 +557,10 @@ body::after {
   .score-header .col-label { width: 48px; font-size: 7px; }
   .score-header .col-name { padding-left: 40px; }
   .serve-cell { width: 30px; }
+  .set-history-cell { width: 34px; }
+  .set-history-cell .set-score { font-size: 14px; }
+  .set-history-cell .set-score .tb-sup { font-size: 8px; top: -3px; right: -7px; }
+  .score-header .col-label.set-history-label { width: 34px; font-size: 6px; }
 }
 
 @media (max-width: 480px) {
@@ -553,9 +571,12 @@ body::after {
   .score-cell.pts-cell .val { font-size: 16px; }
   .score-header .col-label { width: 40px; font-size: 6px; }
   .sponsor-slot { width: 80px; height: 28px; }
+  .set-history-cell { width: 28px; }
+  .set-history-cell .set-score { font-size: 12px; }
+  .set-history-cell .set-score .tb-sup { font-size: 7px; }
+  .score-header .col-label.set-history-label { width: 28px; }
 }
 
-/* TV-friendly large screen */
 @media (min-width: 1800px) {
   .broadcast-container { max-width: 1700px; }
   .team-name { font-size: 22px; }
@@ -564,12 +585,14 @@ body::after {
   .score-cell.sets-cell .val { font-size: 30px; }
   .score-cell.pts-cell .val { font-size: 34px; }
   .player-names { font-size: 15px; }
+  .set-history-cell { width: 56px; }
+  .set-history-cell .set-score { font-size: 24px; }
+  .set-history-cell .set-score .tb-sup { font-size: 13px; }
 }
 </style>
 </head>
 <body>
 
-<!-- Loading overlay -->
 <div class="loading-overlay" id="loadingOverlay">
   <div class="loading-spinner"></div>
   <div class="loading-text">Connecting to broadcast...</div>
@@ -577,21 +600,13 @@ body::after {
 
 <div class="broadcast-container">
 
-  <!-- SPONSOR BAR -->
   <div class="sponsor-bar">
     <span class="label">Sponsors</span>
-    <div class="sponsor-slot" id="sponsor1">
-      <span class="empty-sponsor">Sponsor</span>
-    </div>
-    <div class="sponsor-slot" id="sponsor2">
-      <span class="empty-sponsor">Sponsor</span>
-    </div>
-    <div class="sponsor-slot" id="sponsor3">
-      <span class="empty-sponsor">Sponsor</span>
-    </div>
+    <div class="sponsor-slot" id="sponsor1"><span class="empty-sponsor">Sponsor</span></div>
+    <div class="sponsor-slot" id="sponsor2"><span class="empty-sponsor">Sponsor</span></div>
+    <div class="sponsor-slot" id="sponsor3"><span class="empty-sponsor">Sponsor</span></div>
   </div>
 
-  <!-- VIDEO PLAYER -->
   <div class="video-wrapper" id="videoWrapper">
     <div class="video-placeholder" id="videoPlaceholder">
       <div class="icon">
@@ -601,12 +616,12 @@ body::after {
     </div>
   </div>
 
-  <!-- SCOREBOARD HUD — Tennis Style Rows -->
+  <!-- SCOREBOARD HUD -->
   <div class="scoreboard-hud">
 
-    <!-- Column headers -->
-    <div class="score-header">
+    <div class="score-header" id="scoreHeader">
       <div class="col-name"></div>
+      <div id="headerSetHistory" style="display:contents;"></div>
       <div class="col-label">SETS</div>
       <div class="col-label">GAMES</div>
       <div class="col-label pts-label">PTS</div>
@@ -621,6 +636,7 @@ body::after {
         <div class="team-name" id="teamAName">TEAM A</div>
         <div class="player-names" id="playersA">—</div>
       </div>
+      <div id="setHistoryA" style="display:contents;"></div>
       <div class="score-cell sets-cell">
         <span class="val" id="setsA">0</span>
       </div>
@@ -641,6 +657,7 @@ body::after {
         <div class="team-name" id="teamBName">TEAM B</div>
         <div class="player-names" id="playersB">—</div>
       </div>
+      <div id="setHistoryB" style="display:contents;"></div>
       <div class="score-cell sets-cell">
         <span class="val" id="setsB">0</span>
       </div>
@@ -665,28 +682,21 @@ body::after {
 <script src="firebase-config.js"></script>
 
 <script>
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const matchRef = db.ref('match');
 
-// Track previous values for pulse animations
 let prevScoreA = null;
 let prevScoreB = null;
 let currentStreamURL = '';
 
-// Helper: extract YouTube embed URL
 function getYouTubeEmbedURL(url) {
   if (!url) return '';
-  // Already an embed URL
   if (url.includes('/embed/')) return url;
-  // youtu.be short link
   let match = url.match(/youtu\.be\/([^?&]+)/);
   if (match) return `https://www.youtube.com/embed/${match[1]}?autoplay=1&mute=1`;
-  // youtube.com/watch?v=
   match = url.match(/[?&]v=([^?&]+)/);
   if (match) return `https://www.youtube.com/embed/${match[1]}?autoplay=1&mute=1`;
-  // youtube.com/live/
   match = url.match(/youtube\.com\/live\/([^?&]+)/);
   if (match) return `https://www.youtube.com/embed/${match[1]}?autoplay=1&mute=1`;
   return url;
@@ -700,19 +710,14 @@ function updateSponsor(slotId, url) {
     el.innerHTML = '<span class="empty-sponsor">Sponsor</span>';
   }
 }
-  
 
-// Update video
 function updateStream(url) {
   const embedURL = getYouTubeEmbedURL(url);
   if (embedURL === currentStreamURL) return;
   currentStreamURL = embedURL;
-
   const wrapper = document.getElementById('videoWrapper');
   const placeholder = document.getElementById('videoPlaceholder');
-
   if (embedURL) {
-    // Remove placeholder, add iframe
     if (placeholder) placeholder.style.display = 'none';
     let iframe = wrapper.querySelector('iframe');
     if (!iframe) {
@@ -729,42 +734,78 @@ function updateStream(url) {
   }
 }
 
-// Pulse animation on score change
 function pulseScore(el) {
   el.classList.remove('pulse');
-  void el.offsetWidth; // trigger reflow
+  void el.offsetWidth;
   el.classList.add('pulse');
 }
 
+// Render set history columns in header + both team rows
+function renderSetHistory(setHistory) {
+  const sets = setHistory || [];
+  const headerContainer = document.getElementById('headerSetHistory');
+  const historyAEl = document.getElementById('setHistoryA');
+  const historyBEl = document.getElementById('setHistoryB');
+
+  // Build header labels
+  let headerHTML = '';
+  for (let i = 0; i < sets.length; i++) {
+    headerHTML += `<div class="col-label set-history-label">S${i + 1}</div>`;
+  }
+  headerContainer.innerHTML = headerHTML;
+
+  // Build cells for team A and B
+  let htmlA = '';
+  let htmlB = '';
+  for (let i = 0; i < sets.length; i++) {
+    const s = sets[i];
+    const gamesA = s.gamesA ?? 0;
+    const gamesB = s.gamesB ?? 0;
+    const wonA = gamesA > gamesB;
+    const wonB = gamesB > gamesA;
+    const tbA = s.tiebreakA;
+    const tbB = s.tiebreakB;
+
+    htmlA += `<div class="set-history-cell ${wonA ? 'set-won' : ''}">
+      <span class="set-score">${gamesA}${(tbA !== undefined && tbA !== null) ? `<span class="tb-sup">${tbA}</span>` : ''}</span>
+    </div>`;
+
+    htmlB += `<div class="set-history-cell ${wonB ? 'set-won' : ''}">
+      <span class="set-score">${gamesB}${(tbB !== undefined && tbB !== null) ? `<span class="tb-sup">${tbB}</span>` : ''}</span>
+    </div>`;
+  }
+
+  historyAEl.innerHTML = htmlA;
+  historyBEl.innerHTML = htmlB;
+}
+
 // Listen for real-time updates
+let prevPointsA = null;
+let prevPointsB = null;
+const POINTS_SEQUENCE = [0, 15, 30, 40];
+
+function getPointsDisplay(val, isTiebreak) {
+  if (isTiebreak) return val;
+  if (val >= 0 && val < POINTS_SEQUENCE.length) return POINTS_SEQUENCE[val];
+  return 'A';
+}
+
 matchRef.on('value', (snapshot) => {
   const data = snapshot.val();
   if (!data) return;
 
-  // Hide loading
   document.getElementById('loadingOverlay').classList.add('hidden');
 
-  // Teams
   document.getElementById('teamAName').textContent = data.teamA || 'TEAM A';
   document.getElementById('teamBName').textContent = data.teamB || 'TEAM B';
   document.getElementById('playersA').textContent = data.playersA || '—';
   document.getElementById('playersB').textContent = data.playersB || '—';
 
-  // Scores with pulse
   const scoreAEl = document.getElementById('scoreA');
   const scoreBEl = document.getElementById('scoreB');
-
   const newScoreA = data.scoreA ?? 0;
   const newScoreB = data.scoreB ?? 0;
-  const POINTS_SEQUENCE = [0, 15, 30, 40];
-   let prevPointsA = null;
-   let prevPointsB = null;
 
-   function getPointsDisplay(val, isTiebreak) {
-     if (isTiebreak) return val;
-     if (val >= 0 && val < POINTS_SEQUENCE.length) return POINTS_SEQUENCE[val];
-     return 'A';
-   }
   if (prevScoreA !== null && prevScoreA !== newScoreA) pulseScore(scoreAEl);
   if (prevScoreB !== null && prevScoreB !== newScoreB) pulseScore(scoreBEl);
 
@@ -773,40 +814,40 @@ matchRef.on('value', (snapshot) => {
   prevScoreA = newScoreA;
   prevScoreB = newScoreB;
 
-  // Sets
   document.getElementById('setsA').textContent = data.setsA ?? 0;
   document.getElementById('setsB').textContent = data.setsB ?? 0;
-  // Points
+
   const isTiebreak = data.isTiebreak || false;
   const pointsAEl = document.getElementById('pointsA');
   const pointsBEl = document.getElementById('pointsB');
   const newPointsA = getPointsDisplay(data.pointsA || 0, isTiebreak);
   const newPointsB = getPointsDisplay(data.pointsB || 0, isTiebreak);
 
-if (prevPointsA !== null && prevPointsA !== newPointsA) pulseScore(pointsAEl);
-if (prevPointsB !== null && prevPointsB !== newPointsB) pulseScore(pointsBEl);
+  if (prevPointsA !== null && prevPointsA !== newPointsA) pulseScore(pointsAEl);
+  if (prevPointsB !== null && prevPointsB !== newPointsB) pulseScore(pointsBEl);
 
-pointsAEl.textContent = newPointsA;
-pointsBEl.textContent = newPointsB;
-prevPointsA = newPointsA;
-prevPointsB = newPointsB;
-  // Serve
+  pointsAEl.textContent = newPointsA;
+  pointsBEl.textContent = newPointsB;
+  prevPointsA = newPointsA;
+  prevPointsB = newPointsB;
+
   const rowA = document.getElementById('rowA');
   const rowB = document.getElementById('rowB');
   rowA.classList.toggle('serving', data.serving === 'A');
   rowB.classList.toggle('serving', data.serving === 'B');
 
-  // Stream
+  // Set history - convert Firebase object to array
+  const setHistory = data.setHistory ? Object.values(data.setHistory) : [];
+  renderSetHistory(setHistory);
+
   updateStream(data.streamURL || '');
 
-  // Sponsors
   const sponsors = data.sponsors || {};
   updateSponsor('sponsor1', sponsors.s1);
   updateSponsor('sponsor2', sponsors.s2);
   updateSponsor('sponsor3', sponsors.s3);
 });
 
-// Fallback: hide loading after 5s even if no data
 setTimeout(() => {
   document.getElementById('loadingOverlay').classList.add('hidden');
 }, 5000);
