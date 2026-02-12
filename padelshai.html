@@ -674,22 +674,81 @@ body::before {
 }
 
 /* Standings editor */
-.standings-editor { display: flex; flex-direction: column; gap: 8px; }
-.st-team-row { display: grid; grid-template-columns: 30px 1fr repeat(6, 52px); gap: 6px; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(0,240,255,0.04); }
-.st-team-row .st-num { font-family: 'Orbitron', sans-serif; font-size: 10px; color: var(--text-secondary); opacity: 0.5; text-align: center; }
-.st-team-row input { width: 100%; padding: 7px 8px; background: var(--bg-input); border: 1px solid rgba(0,240,255,0.06); border-radius: var(--radius); color: var(--text-primary); font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 500; outline: none; text-align: center; }
-.st-team-row input:first-of-type { text-align: left; }
-.st-team-row input:focus { border-color: var(--neon-cyan); }
-.st-header { display: grid; grid-template-columns: 30px 1fr repeat(6, 52px); gap: 6px; padding: 4px 0 8px; border-bottom: 1px solid rgba(0,240,255,0.08); }
-.st-header span { font-family: 'Orbitron', sans-serif; font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); opacity: 0.5; text-align: center; }
+.standings-editor-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.st-header {
+  display: grid;
+  grid-template-columns: 28px 1fr repeat(6, 50px);
+  gap: 6px;
+  padding: 6px 4px 10px;
+  border-bottom: 1px solid rgba(0,240,255,0.1);
+}
+.st-header span {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  text-align: center;
+}
 .st-header span:nth-child(2) { text-align: left; }
+.st-team-row {
+  display: grid;
+  grid-template-columns: 28px 1fr repeat(6, 50px);
+  gap: 6px;
+  align-items: center;
+  padding: 5px 4px;
+  border-bottom: 1px solid rgba(0,240,255,0.03);
+}
+.st-team-row:hover {
+  background: rgba(0,240,255,0.02);
+}
+.st-team-row .st-num {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  text-align: center;
+}
+.st-team-row input {
+  width: 100%;
+  padding: 8px 8px;
+  background: var(--bg-input);
+  border: 1px solid rgba(0,240,255,0.08);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+.st-team-row input[data-f="name"] {
+  text-align: left;
+}
+.st-team-row input:focus {
+  border-color: var(--neon-cyan);
+  background: rgba(0,240,255,0.04);
+}
+.st-team-row input[type="number"] {
+  -moz-appearance: textfield;
+}
+.st-team-row input[type="number"]::-webkit-inner-spin-button,
+.st-team-row input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 @media (max-width: 600px) {
-  .st-team-row { grid-template-columns: 24px 1fr repeat(6, 40px); gap: 4px; }
-  .st-header { grid-template-columns: 24px 1fr repeat(6, 40px); gap: 4px; }
-  .st-team-row input { font-size: 12px; padding: 5px 4px; }
+  .st-team-row { grid-template-columns: 22px 1fr repeat(6, 38px); gap: 3px; }
+  .st-header { grid-template-columns: 22px 1fr repeat(6, 38px); gap: 3px; }
+  .st-team-row input { font-size: 12px; padding: 6px 3px; }
   .st-header span { font-size: 6px; }
 }
-
 </style>
 </head>
 <body>
@@ -901,17 +960,17 @@ body::before {
     </div>
 
     <div style="display:flex;justify-content:center;gap:4px;margin-bottom:16px;">
-      <button class="serve-btn active" id="stGroupTab0" onclick="showAdminGroup(0)">Group A</button>
-      <button class="serve-btn" id="stGroupTab1" onclick="showAdminGroup(1)">Group B</button>
-      <button class="serve-btn" id="stGroupTab2" onclick="showAdminGroup(2)">Group C</button>
+      <button class="serve-btn active" id="stGroupTab0" onclick="showAdminGroup(0)" type="button">Group A</button>
+      <button class="serve-btn" id="stGroupTab1" onclick="showAdminGroup(1)" type="button">Group B</button>
+      <button class="serve-btn" id="stGroupTab2" onclick="showAdminGroup(2)" type="button">Group C</button>
     </div>
 
-    <div id="standingsEditor0" class="standings-editor"></div>
-    <div id="standingsEditor1" class="standings-editor" style="display:none;"></div>
-    <div id="standingsEditor2" class="standings-editor" style="display:none;"></div>
+    <div id="standingsEditor0" class="standings-editor-panel"></div>
+    <div id="standingsEditor1" class="standings-editor-panel" style="display:none;"></div>
+    <div id="standingsEditor2" class="standings-editor-panel" style="display:none;"></div>
 
     <div style="display:flex;justify-content:center;gap:12px;margin-top:16px;">
-      <button class="btn-end-set" onclick="saveStandings()" style="max-width:300px;">&#9889; Save Standings</button>
+      <button class="btn-end-set" onclick="saveStandings()" type="button" style="max-width:300px;">&#9889; Save All Standings</button>
     </div>
   </div>
 
@@ -1296,6 +1355,9 @@ function initAdmin() {
   bindTextInput('sponsor1Input', 'sponsors/s1');
   bindTextInput('sponsor2Input', 'sponsors/s2');
   bindTextInput('sponsor3Input', 'sponsors/s3');
+
+  // Build standings editors immediately with whatever data we have
+  buildAllEditors();
 }
 
 // Auto-init if already authed
@@ -1307,72 +1369,91 @@ if (isAuthenticated) initAdmin();
 // ══════════════════════════════════
 const standingsRef = db.ref('standings');
 let standingsData = { group0: {}, group1: {}, group2: {} };
-let currentAdminGroup = 0;
+let skipNextStandingsRebuild = false;
 
 function showAdminGroup(g) {
-  currentAdminGroup = g;
   for (let i = 0; i < 3; i++) {
     document.getElementById('standingsEditor' + i).style.display = i === g ? 'flex' : 'none';
-    const tab = document.getElementById('stGroupTab' + i);
-    tab.classList.toggle('active', i === g);
+    document.getElementById('stGroupTab' + i).classList.toggle('active', i === g);
   }
 }
 
 function buildStandingsEditor(groupIdx) {
   const container = document.getElementById('standingsEditor' + groupIdx);
+  if (!container) return;
   const groupKey = 'group' + groupIdx;
-  const teams = standingsData[groupKey] ? Object.values(standingsData[groupKey]) : [];
+  const teamsObj = standingsData[groupKey] || {};
+  const teams = Object.values(teamsObj);
 
-  let html = '<div class="st-header"><span>#</span><span>Pair Name</span><span>W</span><span>S+</span><span>S-</span><span>G+</span><span>G-</span><span></span></div>';
+  let html = '<div class="st-header"><span>#</span><span>Pair Name</span><span>W</span><span>S+</span><span>S−</span><span>G+</span><span>G−</span><span></span></div>';
 
   for (let i = 0; i < 8; i++) {
     const t = teams[i] || {};
+    const nm = (t.name || '').replace(/"/g, '&quot;');
     html += '<div class="st-team-row">';
     html += '<span class="st-num">' + (i + 1) + '</span>';
-    html += '<input type="text" data-g="' + groupIdx + '" data-i="' + i + '" data-f="name" value="' + (t.name || '') + '" placeholder="Pair name">';
-    html += '<input type="number" data-g="' + groupIdx + '" data-i="' + i + '" data-f="wins" value="' + (t.wins || 0) + '" min="0">';
-    html += '<input type="number" data-g="' + groupIdx + '" data-i="' + i + '" data-f="setsPlus" value="' + (t.setsPlus || 0) + '" min="0">';
-    html += '<input type="number" data-g="' + groupIdx + '" data-i="' + i + '" data-f="setsMinus" value="' + (t.setsMinus || 0) + '" min="0">';
-    html += '<input type="number" data-g="' + groupIdx + '" data-i="' + i + '" data-f="gamesPlus" value="' + (t.gamesPlus || 0) + '" min="0">';
-    html += '<input type="number" data-g="' + groupIdx + '" data-i="' + i + '" data-f="gamesMinus" value="' + (t.gamesMinus || 0) + '" min="0">';
+    html += '<input type="text" data-g="' + groupIdx + '" data-i="' + i + '" data-f="name" value="' + nm + '" placeholder="Pair ' + (i+1) + ' name">';
+    html += '<input type="number" data-g="' + groupIdx + '" data-i="' + i + '" data-f="wins" value="' + (t.wins || 0) + '" min="0" placeholder="0">';
+    html += '<input type="number" data-g="' + groupIdx + '" data-i="' + i + '" data-f="setsPlus" value="' + (t.setsPlus || 0) + '" min="0" placeholder="0">';
+    html += '<input type="number" data-g="' + groupIdx + '" data-i="' + i + '" data-f="setsMinus" value="' + (t.setsMinus || 0) + '" min="0" placeholder="0">';
+    html += '<input type="number" data-g="' + groupIdx + '" data-i="' + i + '" data-f="gamesPlus" value="' + (t.gamesPlus || 0) + '" min="0" placeholder="0">';
+    html += '<input type="number" data-g="' + groupIdx + '" data-i="' + i + '" data-f="gamesMinus" value="' + (t.gamesMinus || 0) + '" min="0" placeholder="0">';
     html += '</div>';
   }
   container.innerHTML = html;
 }
 
+function buildAllEditors() {
+  for (let g = 0; g < 3; g++) buildStandingsEditor(g);
+}
+
 function saveStandings() {
   const updates = {};
   for (let g = 0; g < 3; g++) {
-    const inputs = document.querySelectorAll('[data-g="' + g + '"]');
+    const inputs = document.querySelectorAll('input[data-g="' + g + '"]');
     const teamMap = {};
-    inputs.forEach(inp => {
-      const i = inp.dataset.i;
-      const f = inp.dataset.f;
+    inputs.forEach(function(inp) {
+      const i = inp.getAttribute('data-i');
+      const f = inp.getAttribute('data-f');
       if (!teamMap[i]) teamMap[i] = {};
-      teamMap[i][f] = f === 'name' ? inp.value : (parseInt(inp.value) || 0);
+      if (f === 'name') {
+        teamMap[i][f] = inp.value;
+      } else {
+        teamMap[i][f] = parseInt(inp.value) || 0;
+      }
     });
-    // Only save non-empty teams
     const groupTeams = {};
-    Object.keys(teamMap).forEach(idx => {
+    Object.keys(teamMap).forEach(function(idx) {
       const t = teamMap[idx];
-      if (t.name && t.name.trim()) {
+      if (t.name && t.name.trim() !== '') {
         groupTeams['team' + idx] = t;
       }
     });
     updates['group' + g] = groupTeams;
   }
-  standingsRef.set(updates).then(() => {
-    showToast('Standings saved');
+  skipNextStandingsRebuild = true;
+  standingsRef.set(updates).then(function() {
+    showToast('Standings saved!');
+  }).catch(function(err) {
+    showToast('Error: ' + err.message);
+    skipNextStandingsRebuild = false;
   });
 }
 
-standingsRef.on('value', (snap) => {
-  const data = snap.val() || {};
+standingsRef.on('value', function(snap) {
+  var data = snap.val() || {};
   standingsData.group0 = data.group0 || {};
   standingsData.group1 = data.group1 || {};
   standingsData.group2 = data.group2 || {};
-  for (let g = 0; g < 3; g++) buildStandingsEditor(g);
+  if (skipNextStandingsRebuild) {
+    skipNextStandingsRebuild = false;
+    return;
+  }
+  buildAllEditors();
 });
+
+// Build empty editors immediately so they're visible even before Firebase responds
+buildAllEditors();
 
 </script>
 </body>
