@@ -113,6 +113,7 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .standings-table thead th:first-child { width: 36px; }
 .standings-table thead th:nth-child(2) { text-align: left; padding-left: 16px; }
 .standings-table thead th.col-w { color: var(--gold); opacity: 0.7; }
+.standings-table thead th.col-p { color: var(--text-primary); opacity: 0.6; }
 .standings-table thead th.col-diff { color: var(--electric-blue); opacity: 0.6; }
 .standings-table tbody tr { border-bottom: 1px solid rgba(59,159,231,0.04); transition: background 0.2s; }
 .standings-table tbody tr:hover { background: rgba(59,159,231,0.03); }
@@ -121,6 +122,7 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .standings-table td:first-child { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--text-secondary); opacity: 0.4; width: 36px; }
 .standings-table td:nth-child(2) { text-align: left; padding-left: 16px; font-weight: 600; color: var(--text-bright); max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .standings-table td.col-w { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gold); }
+.standings-table td.col-p { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--text-primary); opacity: 0.7; }
 .standings-table td.col-plus { color: rgba(91,184,255,0.7); }
 .standings-table td.col-minus { color: rgba(122,147,171,0.5); }
 .standings-table td.col-diff { font-weight: 700; }
@@ -295,11 +297,11 @@ function renderCurrentStandings() {
     if (sdB !== sdA) return sdB - sdA;
     return ((b.gamesPlus||0)-(b.gamesMinus||0)) - ((a.gamesPlus||0)-(a.gamesMinus||0));
   });
-  var h = '<table class="standings-table"><thead><tr><th>#</th><th>PAIR</th><th class="col-w">W</th><th>S+</th><th>S\u2212</th><th class="col-diff">SD</th><th>G+</th><th>G\u2212</th><th class="col-diff">GD</th></tr></thead><tbody>';
+  var h = '<table class="standings-table"><thead><tr><th>#</th><th>PAIR</th><th class="col-p">P</th><th class="col-w">W</th><th>S+</th><th>S\u2212</th><th class="col-diff">SD</th><th>G+</th><th>G\u2212</th><th class="col-diff">GD</th></tr></thead><tbody>';
   sorted.forEach(function(t, i) {
     var sd = (t.setsPlus||0)-(t.setsMinus||0), gd = (t.gamesPlus||0)-(t.gamesMinus||0);
     var sdC = sd>0?'positive':sd<0?'negative':'zero', gdC = gd>0?'positive':gd<0?'negative':'zero';
-    h += '<tr><td>'+(i+1)+'</td><td>'+(t.name||'\u2014')+'</td><td class="col-w">'+(t.wins||0)+'</td><td class="col-plus">'+(t.setsPlus||0)+'</td><td class="col-minus">'+(t.setsMinus||0)+'</td><td class="col-diff '+sdC+'">'+(sd>0?'+'+sd:sd)+'</td><td class="col-plus">'+(t.gamesPlus||0)+'</td><td class="col-minus">'+(t.gamesMinus||0)+'</td><td class="col-diff '+gdC+'">'+(gd>0?'+'+gd:gd)+'</td></tr>';
+    h += '<tr><td>'+(i+1)+'</td><td>'+(t.name||'\u2014')+'</td><td class="col-p">'+(t.played||0)+'</td><td class="col-w">'+(t.wins||0)+'</td><td class="col-plus">'+(t.setsPlus||0)+'</td><td class="col-minus">'+(t.setsMinus||0)+'</td><td class="col-diff '+sdC+'">'+(sd>0?'+'+sd:sd)+'</td><td class="col-plus">'+(t.gamesPlus||0)+'</td><td class="col-minus">'+(t.gamesMinus||0)+'</td><td class="col-diff '+gdC+'">'+(gd>0?'+'+gd:gd)+'</td></tr>';
   });
   h += '</tbody></table>';
   c.innerHTML = h;
@@ -496,13 +498,10 @@ matchRef.on('value', function(snap) {
   if (hasScoreChanged(lastQueuedData, d)) {
     lastQueuedData = d;
     if (SCORE_DELAY === 0) {
-      /* No delay — apply immediately */
       applyScoreData(d);
       lastMatchData = d;
-      /* Clear any pending queue items since we're showing latest instantly */
       scoreQueue = [];
     } else {
-      /* Add to queue with the time it should be displayed */
       scoreQueue.push({ data: d, showAt: Date.now() + SCORE_DELAY });
       ensureQueueProcessor();
     }
