@@ -672,6 +672,70 @@ body::before {
   .serve-toggle-container { flex-direction: column; gap: 10px; }
   .score-display { font-size: 32px; }
 }
+
+/* Standings editor */
+.standings-editor-panel { display: flex; flex-direction: column; gap: 0; }
+.st-header { display: grid; grid-template-columns: 26px 1fr repeat(8, 44px); gap: 4px; padding: 6px 4px 10px; border-bottom: 1px solid rgba(0,240,255,0.1); }
+.st-header span { font-family: 'Orbitron', sans-serif; font-size: 7px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); opacity: 0.6; text-align: center; }
+.st-header span:nth-child(2) { text-align: left; }
+.st-header span.diff-col { color: var(--neon-cyan); opacity: 0.5; }
+.st-team-row { display: grid; grid-template-columns: 26px 1fr repeat(8, 44px); gap: 4px; align-items: center; padding: 4px; border-bottom: 1px solid rgba(0,240,255,0.03); }
+.st-team-row:hover { background: rgba(0,240,255,0.02); }
+.st-team-row .st-num { font-family: 'Orbitron', sans-serif; font-size: 10px; color: var(--text-secondary); opacity: 0.5; text-align: center; }
+.st-team-row input { width: 100%; padding: 7px 4px; background: var(--bg-input); border: 1px solid rgba(0,240,255,0.08); border-radius: var(--radius); color: var(--text-primary); font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 500; outline: none; text-align: center; transition: border-color 0.2s; }
+.st-team-row input[data-f="name"] { text-align: left; padding-left: 8px; }
+.st-team-row input:focus { border-color: var(--neon-cyan); background: rgba(0,240,255,0.04); }
+.st-team-row .st-diff { font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; text-align: center; color: var(--neon-cyan); }
+.st-team-row .st-diff.neg { color: var(--neon-red); }
+.st-team-row input[type="number"] { -moz-appearance: textfield; }
+.st-team-row input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Schedule editor */
+.sched-editor-panel { display: flex; flex-direction: column; gap: 0; }
+.sched-fixture-header { display: flex; align-items: center; gap: 12px; padding: 12px 0 8px; border-bottom: 1px solid rgba(0,240,255,0.06); }
+.sched-fixture-header .fix-label { font-family: 'Orbitron', sans-serif; font-size: 11px; color: var(--neon-yellow); letter-spacing: 2px; min-width: 90px; }
+.sched-fixture-header input { flex: 1; padding: 8px 12px; background: var(--bg-input); border: 1px solid rgba(0,240,255,0.08); border-radius: var(--radius); color: var(--text-primary); font-family: 'Rajdhani', sans-serif; font-size: 14px; outline: none; }
+.sched-fixture-header input:focus { border-color: var(--neon-cyan); }
+.sched-match-datetime {
+  display: flex;
+  gap: 8px;
+  padding: 10px 0 2px;
+  margin-top: 6px;
+  border-top: 1px solid rgba(0,240,255,0.06);
+}
+.sched-match-datetime input {
+  padding: 6px 8px;
+  background: var(--bg-input);
+  border: 1px solid rgba(251,191,36,0.12);
+  border-radius: var(--radius);
+  color: var(--neon-yellow);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.sched-match-datetime input:focus { border-color: var(--neon-yellow); }
+.sched-match-datetime input[type="date"] { flex: 1; }
+.sched-match-datetime input[type="time"] { width: 100px; }
+.sched-match-row { display: grid; grid-template-columns: 1fr 60px 12px 60px 1fr; gap: 6px; align-items: center; padding: 6px 0 10px; }
+.sched-match-row input { width: 100%; padding: 7px 6px; background: var(--bg-input); border: 1px solid rgba(0,240,255,0.06); border-radius: var(--radius); color: var(--text-primary); font-family: 'Rajdhani', sans-serif; font-size: 13px; outline: none; text-align: center; }
+.sched-match-row input.team-input { text-align: left; padding-left: 8px; }
+.sched-match-row input.score-input { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; color: var(--neon-cyan); }
+.sched-match-row input:focus { border-color: var(--neon-cyan); }
+.sched-match-row .vs-label { text-align: center; font-size: 10px; color: var(--text-secondary); opacity: 0.3; }
+.sched-nav { display: flex; justify-content: center; gap: 4px; margin-bottom: 12px; flex-wrap: wrap; }
+.sched-nav-btn { padding: 6px 12px; font-family: 'Orbitron', sans-serif; font-size: 9px; letter-spacing: 1px; color: var(--text-secondary); background: rgba(0,0,0,0.2); border: 1px solid rgba(0,240,255,0.06); border-radius: var(--radius); cursor: pointer; transition: all 0.2s; }
+.sched-nav-btn:hover { color: var(--text-bright); }
+.sched-nav-btn.active { color: var(--neon-yellow); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.06); }
+
+@media (max-width: 600px) {
+  .st-team-row { grid-template-columns: 20px 1fr repeat(8, 34px); gap: 2px; }
+  .st-header { grid-template-columns: 20px 1fr repeat(8, 34px); gap: 2px; }
+  .st-team-row input { font-size: 11px; padding: 5px 2px; }
+  .st-header span { font-size: 5px; }
+  .sched-match-row { grid-template-columns: 1fr 45px 10px 45px 1fr; gap: 3px; }
+  .sched-match-row input { font-size: 11px; padding: 5px 3px; }
+}
 </style>
 </head>
 <body>
@@ -834,7 +898,7 @@ body::before {
     </div>
   </div>
 
-  <!-- STREAM URL -->
+  <!-- STREAM URL & BROADCAST DELAY -->
   <div class="card">
     <div class="card-title">
       <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.11-.9-2-2-2zm0 14H3V5h18v12zm-5-6l-7 4V7z"/></svg>
@@ -844,6 +908,17 @@ body::before {
       <div class="form-group">
         <label>YouTube URL or Embed URL</label>
         <input type="text" id="streamURLInput" placeholder="https://youtube.com/watch?v=... or embed URL">
+      </div>
+    </div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,240,255,0.06);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <label style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--neon-yellow);text-transform:uppercase;">Score Broadcast Delay</label>
+        <span id="delayValueLabel" style="font-family:'Orbitron',sans-serif;font-size:18px;font-weight:700;color:var(--neon-yellow);min-width:50px;text-align:right;">15s</span>
+      </div>
+      <input type="range" id="delaySlider" min="0" max="60" step="1" value="15" oninput="onDelayChange(this.value)" style="width:100%;accent-color:var(--neon-yellow);cursor:pointer;">
+      <div style="display:flex;justify-content:space-between;margin-top:4px;">
+        <span style="font-size:10px;color:var(--text-secondary);opacity:0.4;">0s (instant)</span>
+        <span style="font-size:10px;color:var(--text-secondary);opacity:0.4;">60s</span>
       </div>
     </div>
   </div>
@@ -871,6 +946,46 @@ body::before {
         <label>Sponsor 3 — Image URL</label>
         <input type="text" id="sponsor3Input" placeholder="https://example.com/logo3.png">
       </div>
+    </div>
+  </div>
+
+
+  <!-- STANDINGS MANAGEMENT -->
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+      League Standings
+    </div>
+    <div style="display:flex;justify-content:center;gap:4px;margin-bottom:16px;">
+      <button class="serve-btn active" id="stGroupTab0" onclick="showAdminGroup(0)" type="button">Group A</button>
+      <button class="serve-btn" id="stGroupTab1" onclick="showAdminGroup(1)" type="button">Group B</button>
+      <button class="serve-btn" id="stGroupTab2" onclick="showAdminGroup(2)" type="button">Group C</button>
+    </div>
+    <div id="standingsEditor0" class="standings-editor-panel"></div>
+    <div id="standingsEditor1" class="standings-editor-panel" style="display:none;"></div>
+    <div id="standingsEditor2" class="standings-editor-panel" style="display:none;"></div>
+    <div style="display:flex;justify-content:center;margin-top:16px;">
+      <button class="btn-end-set" onclick="saveStandings()" type="button" style="max-width:300px;">&#9889; Save Standings</button>
+    </div>
+  </div>
+
+  <!-- SCHEDULE MANAGEMENT -->
+  <div class="card">
+    <div class="card-title">
+      <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+      Schedule &amp; Fixtures
+    </div>
+    <div style="display:flex;justify-content:center;gap:4px;margin-bottom:12px;">
+      <button class="serve-btn active" id="scGroupTab0" onclick="showSchedAdminGroup(0)" type="button">Group A</button>
+      <button class="serve-btn" id="scGroupTab1" onclick="showSchedAdminGroup(1)" type="button">Group B</button>
+      <button class="serve-btn" id="scGroupTab2" onclick="showSchedAdminGroup(2)" type="button">Group C</button>
+    </div>
+    <div class="sched-nav" id="schedFixtureNav"></div>
+    <div id="schedEditor0" class="sched-editor-panel"></div>
+    <div id="schedEditor1" class="sched-editor-panel" style="display:none;"></div>
+    <div id="schedEditor2" class="sched-editor-panel" style="display:none;"></div>
+    <div style="display:flex;justify-content:center;margin-top:16px;">
+      <button class="btn-end-set" onclick="saveSchedule()" type="button" style="max-width:300px;">&#9889; Save Schedule</button>
     </div>
   </div>
 
@@ -958,7 +1073,6 @@ function showToast(msg) {
 // ══════════════════════════════════
 function syncUI(data) {
   matchData = { ...matchData, ...data };
-  // Ensure setHistory is always an array
   if (data.setHistory) {
     matchData.setHistory = Object.values(data.setHistory);
   } else {
@@ -970,6 +1084,11 @@ function syncUI(data) {
   document.getElementById('playersAInput').value = data.playersA || '';
   document.getElementById('playersBInput').value = data.playersB || '';
   document.getElementById('streamURLInput').value = data.streamURL || '';
+
+  // Sync delay slider
+  var delayVal = data.scoreDelay !== undefined ? data.scoreDelay : 15;
+  document.getElementById('delaySlider').value = delayVal;
+  document.getElementById('delayValueLabel').textContent = delayVal + 's';
 
   const sponsors = data.sponsors || {};
   document.getElementById('sponsor1Input').value = sponsors.s1 || '';
@@ -986,18 +1105,14 @@ function updateScoreUI() {
   document.getElementById('scoreBDisplay').textContent = matchData.scoreB;
   document.getElementById('setsADisplay').textContent = matchData.setsA;
   document.getElementById('setsBDisplay').textContent = matchData.setsB;
-
-  // ✅ FIX — Update points display properly
-  document.getElementById('pointsADisplay').textContent =
-    getPointsDisplay(matchData.pointsA, matchData.isTiebreak);
-
-  document.getElementById('pointsBDisplay').textContent =
-    getPointsDisplay(matchData.pointsB, matchData.isTiebreak);
-
   document.getElementById('scoreTeamALabel').textContent = matchData.teamA || 'TEAM A';
   document.getElementById('scoreTeamBLabel').textContent = matchData.teamB || 'TEAM B';
   document.getElementById('pointsTeamALabel').textContent = matchData.teamA || 'PTS A';
   document.getElementById('pointsTeamBLabel').textContent = matchData.teamB || 'PTS B';
+  document.getElementById('pointsADisplay').textContent = getPointsDisplay(matchData.pointsA || 0, matchData.isTiebreak);
+  document.getElementById('pointsBDisplay').textContent = getPointsDisplay(matchData.pointsB || 0, matchData.isTiebreak);
+  var tbBtn = document.getElementById('tiebreakToggle');
+  if (tbBtn) tbBtn.textContent = matchData.isTiebreak ? 'TIEBREAK ON' : 'TIEBREAK OFF';
 }
 
 function updateServeUI() {
@@ -1245,6 +1360,21 @@ function bindTextInput(elId, key) {
 }
 
 // ══════════════════════════════════
+// BROADCAST DELAY CONTROL
+// ══════════════════════════════════
+var delayDebounce = null;
+function onDelayChange(val) {
+  val = parseInt(val) || 0;
+  document.getElementById('delayValueLabel').textContent = val + 's';
+  clearTimeout(delayDebounce);
+  delayDebounce = setTimeout(function() {
+    matchRef.update({ scoreDelay: val }).then(function() {
+      showToast('Delay: ' + val + 's');
+    });
+  }, 500);
+}
+
+// ══════════════════════════════════
 // INIT
 // ══════════════════════════════════
 function initAdmin() {
@@ -1267,6 +1397,208 @@ function initAdmin() {
 
 // Auto-init if already authed
 if (isAuthenticated) initAdmin();
+
+
+// ══════════════════════════════════
+// STANDINGS MANAGEMENT
+// ══════════════════════════════════
+var standingsRef = db.ref('standings');
+var standingsData = { group0: {}, group1: {}, group2: {} };
+var skipStandingsRebuild = false;
+
+function showAdminGroup(g) {
+  for (var i = 0; i < 3; i++) {
+    document.getElementById('standingsEditor' + i).style.display = i === g ? 'flex' : 'none';
+    document.getElementById('stGroupTab' + i).classList.toggle('active', i === g);
+  }
+}
+
+function buildStandingsEditor(gi) {
+  var c = document.getElementById('standingsEditor' + gi);
+  if (!c) return;
+  var teams = standingsData['group' + gi] ? Object.values(standingsData['group' + gi]) : [];
+  var h = '<div class="st-header"><span>#</span><span>Pair Name</span><span>W</span><span>S+</span><span>S\u2212</span><span class="diff-col">SD</span><span>G+</span><span>G\u2212</span><span class="diff-col">GD</span><span></span></div>';
+  for (var i = 0; i < 8; i++) {
+    var t = teams[i] || {};
+    var nm = (t.name || '').replace(/"/g, '&quot;');
+    var sd = (t.setsPlus||0) - (t.setsMinus||0);
+    var gd = (t.gamesPlus||0) - (t.gamesMinus||0);
+    h += '<div class="st-team-row">';
+    h += '<span class="st-num">' + (i+1) + '</span>';
+    h += '<input type="text" data-g="'+gi+'" data-i="'+i+'" data-f="name" value="'+nm+'" placeholder="Pair '+(i+1)+'">';
+    h += '<input type="number" data-g="'+gi+'" data-i="'+i+'" data-f="wins" value="'+(t.wins||0)+'" min="0">';
+    h += '<input type="number" data-g="'+gi+'" data-i="'+i+'" data-f="setsPlus" value="'+(t.setsPlus||0)+'" min="0" oninput="updateDiffs(this)">';
+    h += '<input type="number" data-g="'+gi+'" data-i="'+i+'" data-f="setsMinus" value="'+(t.setsMinus||0)+'" min="0" oninput="updateDiffs(this)">';
+    h += '<span class="st-diff'+(sd<0?' neg':'')+'" id="sd_'+gi+'_'+i+'">'+(sd>0?'+'+sd:sd)+'</span>';
+    h += '<input type="number" data-g="'+gi+'" data-i="'+i+'" data-f="gamesPlus" value="'+(t.gamesPlus||0)+'" min="0" oninput="updateDiffs(this)">';
+    h += '<input type="number" data-g="'+gi+'" data-i="'+i+'" data-f="gamesMinus" value="'+(t.gamesMinus||0)+'" min="0" oninput="updateDiffs(this)">';
+    h += '<span class="st-diff'+(gd<0?' neg':'')+'" id="gd_'+gi+'_'+i+'">'+(gd>0?'+'+gd:gd)+'</span>';
+    h += '<span></span>';
+    h += '</div>';
+  }
+  c.innerHTML = h;
+}
+
+function updateDiffs(el) {
+  var g = el.getAttribute('data-g'), i = el.getAttribute('data-i');
+  var row = el.closest('.st-team-row');
+  var sp = parseInt(row.querySelector('[data-f="setsPlus"]').value)||0;
+  var sm = parseInt(row.querySelector('[data-f="setsMinus"]').value)||0;
+  var gp = parseInt(row.querySelector('[data-f="gamesPlus"]').value)||0;
+  var gm = parseInt(row.querySelector('[data-f="gamesMinus"]').value)||0;
+  var sd = sp - sm, gd = gp - gm;
+  var sdEl = document.getElementById('sd_'+g+'_'+i);
+  var gdEl = document.getElementById('gd_'+g+'_'+i);
+  sdEl.textContent = (sd>0?'+'+sd:sd); sdEl.className = 'st-diff' + (sd<0?' neg':'');
+  gdEl.textContent = (gd>0?'+'+gd:gd); gdEl.className = 'st-diff' + (gd<0?' neg':'');
+}
+
+function buildAllEditors() { for (var g=0;g<3;g++) buildStandingsEditor(g); }
+
+function saveStandings() {
+  var updates = {};
+  for (var g = 0; g < 3; g++) {
+    var inputs = document.querySelectorAll('input[data-g="'+g+'"]');
+    var tm = {};
+    inputs.forEach(function(inp) {
+      var i=inp.getAttribute('data-i'), f=inp.getAttribute('data-f');
+      if(!tm[i])tm[i]={};
+      tm[i][f] = f==='name' ? inp.value : (parseInt(inp.value)||0);
+    });
+    var gt = {};
+    Object.keys(tm).forEach(function(idx){ if(tm[idx].name&&tm[idx].name.trim()) gt['team'+idx]=tm[idx]; });
+    updates['group'+g] = gt;
+  }
+  skipStandingsRebuild = true;
+  standingsRef.set(updates).then(function(){ showToast('Standings saved!'); }).catch(function(e){ showToast('Error: '+e.message); skipStandingsRebuild=false; });
+}
+
+standingsRef.on('value', function(snap) {
+  var d = snap.val() || {};
+  standingsData.group0=d.group0||{}; standingsData.group1=d.group1||{}; standingsData.group2=d.group2||{};
+  if (skipStandingsRebuild) { skipStandingsRebuild=false; return; }
+  buildAllEditors();
+});
+buildAllEditors();
+
+// ══════════════════════════════════
+// SCHEDULE MANAGEMENT
+// ══════════════════════════════════
+var scheduleRef = db.ref('schedule');
+var schedData = { group0:{}, group1:{}, group2:{} };
+var adminSchedGroup = 0, adminSchedFixture = 0;
+var skipSchedRebuild = false;
+var MATCHES_PER_FIXTURE = 4;
+
+function showSchedAdminGroup(g) {
+  adminSchedGroup = g; adminSchedFixture = 0;
+  for (var i=0;i<3;i++) {
+    document.getElementById('schedEditor'+i).style.display = i===g?'flex':'none';
+    document.getElementById('scGroupTab'+i).classList.toggle('active', i===g);
+  }
+  renderSchedFixtureNav(); buildAllSchedEditors();
+}
+
+function renderSchedFixtureNav() {
+  var h = '';
+  for (var f=0;f<7;f++) {
+    h += '<button class="sched-nav-btn'+(f===adminSchedFixture?' active':'')+'" onclick="switchAdminFixture('+f+')" type="button">F'+(f+1)+'</button>';
+  }
+  document.getElementById('schedFixtureNav').innerHTML = h;
+}
+
+function switchAdminFixture(f) {
+  adminSchedFixture = f;
+  renderSchedFixtureNav();
+  buildSchedEditor(adminSchedGroup);
+}
+
+function buildSchedEditor(gi) {
+  var c = document.getElementById('schedEditor'+gi);
+  if (!c) return;
+  var gKey = 'group'+gi, fKey = 'fixture'+adminSchedFixture;
+  var fData = (schedData[gKey]||{})[fKey] || {};
+  var matches = fData.matches ? Object.values(fData.matches) : [];
+  var h = '<div class="sched-fixture-header">';
+  h += '<span class="fix-label">FIXTURE '+(adminSchedFixture+1)+'</span>';
+  h += '</div>';
+  for (var i=0; i<MATCHES_PER_FIXTURE; i++) {
+    var m = matches[i] || {};
+    h += '<div class="sched-match-datetime">';
+    h += '<input type="date" data-sg="'+gi+'" data-sf="'+adminSchedFixture+'" data-si="'+i+'" data-smf="date" value="'+(m.date||'')+'">';
+    h += '<input type="time" data-sg="'+gi+'" data-sf="'+adminSchedFixture+'" data-si="'+i+'" data-smf="time" value="'+(m.time||'')+'">';
+    h += '</div>';
+    h += '<div class="sched-match-row">';
+    h += '<input class="team-input" data-sg="'+gi+'" data-sf="'+adminSchedFixture+'" data-si="'+i+'" data-smf="teamA" value="'+((m.teamA||'').replace(/"/g,'&quot;'))+'" placeholder="Home team">';
+    h += '<input class="score-input" data-sg="'+gi+'" data-sf="'+adminSchedFixture+'" data-si="'+i+'" data-smf="scoreA" value="'+(m.scoreA!==undefined?m.scoreA:'')+'" placeholder="\u2013">';
+    h += '<span class="vs-label">vs</span>';
+    h += '<input class="score-input" data-sg="'+gi+'" data-sf="'+adminSchedFixture+'" data-si="'+i+'" data-smf="scoreB" value="'+(m.scoreB!==undefined?m.scoreB:'')+'" placeholder="\u2013">';
+    h += '<input class="team-input" data-sg="'+gi+'" data-sf="'+adminSchedFixture+'" data-si="'+i+'" data-smf="teamB" value="'+((m.teamB||'').replace(/"/g,'&quot;'))+'" placeholder="Away team">';
+    h += '</div>';
+  }
+  c.innerHTML = h;
+}
+
+function buildAllSchedEditors() { buildSchedEditor(adminSchedGroup); }
+
+function saveSchedule() {
+  var updates = {};
+  for (var g=0;g<3;g++) {
+    var gKey = 'group'+g;
+    if (!updates[gKey]) updates[gKey] = JSON.parse(JSON.stringify(schedData[gKey]||{}));
+    // Only save the currently visible fixture per group? No - save ALL fixtures.
+  }
+  // Collect all inputs across all groups/fixtures
+  // Since only one group editor is visible at a time, we need to collect from the DOM for current group
+  // and keep existing data for other groups. Let's save all data:
+  // Actually we need to read from all fixture editors. But we only build one fixture at a time.
+  // Solution: save current fixture to schedData, then push everything.
+  collectCurrentFixtureToData();
+  var allUpdates = {};
+  for (var g=0;g<3;g++) { allUpdates['group'+g] = schedData['group'+g] || {}; }
+  skipSchedRebuild = true;
+  scheduleRef.set(allUpdates).then(function(){ showToast('Schedule saved!'); }).catch(function(e){ showToast('Error: '+e.message); skipSchedRebuild=false; });
+}
+
+function collectCurrentFixtureToData() {
+  var g = adminSchedGroup, f = adminSchedFixture;
+  var gKey='group'+g, fKey='fixture'+f;
+  if(!schedData[gKey]) schedData[gKey]={};
+  var fObj = { matches: {} };
+  var inputs = document.querySelectorAll('[data-sg="'+g+'"][data-sf="'+f+'"]');
+  var mMap = {};
+  inputs.forEach(function(inp){
+    var i=inp.getAttribute('data-si'), mf=inp.getAttribute('data-smf');
+    if(!mMap[i]) mMap[i]={};
+    mMap[i][mf] = inp.value;
+  });
+  Object.keys(mMap).forEach(function(idx){
+    var m = mMap[idx];
+    if ((m.teamA&&m.teamA.trim()) || (m.teamB&&m.teamB.trim())) {
+      fObj.matches['match'+idx] = m;
+    }
+  });
+  schedData[gKey][fKey] = fObj;
+}
+
+// Auto-save current fixture data when switching fixtures
+var _origSwitchFixture = switchAdminFixture;
+switchAdminFixture = function(f) {
+  collectCurrentFixtureToData();
+  adminSchedFixture = f;
+  renderSchedFixtureNav();
+  buildSchedEditor(adminSchedGroup);
+};
+
+scheduleRef.on('value', function(snap) {
+  var d = snap.val() || {};
+  schedData.group0=d.group0||{}; schedData.group1=d.group1||{}; schedData.group2=d.group2||{};
+  if (skipSchedRebuild) { skipSchedRebuild=false; return; }
+  buildAllSchedEditors();
+});
+renderSchedFixtureNav();
+buildAllSchedEditors();
+
 </script>
 </body>
 </html>
