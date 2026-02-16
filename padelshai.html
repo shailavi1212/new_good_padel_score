@@ -675,11 +675,11 @@ body::before {
 
 /* Standings editor */
 .standings-editor-panel { display: flex; flex-direction: column; gap: 0; }
-.st-header { display: grid; grid-template-columns: 26px 1fr repeat(8, 44px); gap: 4px; padding: 6px 4px 10px; border-bottom: 1px solid rgba(0,240,255,0.1); }
+.st-header { display: grid; grid-template-columns: 26px 1fr repeat(9, 44px); gap: 4px; padding: 6px 4px 10px; border-bottom: 1px solid rgba(0,240,255,0.1); }
 .st-header span { font-family: 'Orbitron', sans-serif; font-size: 7px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-secondary); opacity: 0.6; text-align: center; }
 .st-header span:nth-child(2) { text-align: left; }
 .st-header span.diff-col { color: var(--neon-cyan); opacity: 0.5; }
-.st-team-row { display: grid; grid-template-columns: 26px 1fr repeat(8, 44px); gap: 4px; align-items: center; padding: 4px; border-bottom: 1px solid rgba(0,240,255,0.03); }
+.st-team-row { display: grid; grid-template-columns: 26px 1fr repeat(9, 44px); gap: 4px; align-items: center; padding: 4px; border-bottom: 1px solid rgba(0,240,255,0.03); }
 .st-team-row:hover { background: rgba(0,240,255,0.02); }
 .st-team-row .st-num { font-family: 'Orbitron', sans-serif; font-size: 10px; color: var(--text-secondary); opacity: 0.5; text-align: center; }
 .st-team-row input { width: 100%; padding: 7px 4px; background: var(--bg-input); border: 1px solid rgba(0,240,255,0.08); border-radius: var(--radius); color: var(--text-primary); font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 500; outline: none; text-align: center; transition: border-color 0.2s; }
@@ -729,8 +729,8 @@ body::before {
 .sched-nav-btn.active { color: var(--neon-yellow); border-color: rgba(251,191,36,0.3); background: rgba(251,191,36,0.06); }
 
 @media (max-width: 600px) {
-  .st-team-row { grid-template-columns: 20px 1fr repeat(8, 34px); gap: 2px; }
-  .st-header { grid-template-columns: 20px 1fr repeat(8, 34px); gap: 2px; }
+  .st-team-row { grid-template-columns: 20px 1fr repeat(9, 34px); gap: 2px; }
+  .st-header { grid-template-columns: 20px 1fr repeat(9, 34px); gap: 2px; }
   .st-team-row input { font-size: 11px; padding: 5px 2px; }
   .st-header span { font-size: 5px; }
   .sched-match-row { grid-template-columns: 1fr 45px 10px 45px 1fr; gap: 3px; }
@@ -1417,7 +1417,7 @@ function buildStandingsEditor(gi) {
   var c = document.getElementById('standingsEditor' + gi);
   if (!c) return;
   var teams = standingsData['group' + gi] ? Object.values(standingsData['group' + gi]) : [];
-  var h = '<div class="st-header"><span>#</span><span>Pair Name</span><span>W</span><span>S+</span><span>S\u2212</span><span class="diff-col">SD</span><span>G+</span><span>G\u2212</span><span class="diff-col">GD</span><span></span></div>';
+  var h = '<div class="st-header"><span>#</span><span>Pair Name</span><span>P</span><span>W</span><span>S+</span><span>S\u2212</span><span class="diff-col">SD</span><span>G+</span><span>G\u2212</span><span class="diff-col">GD</span><span></span></div>';
   for (var i = 0; i < 8; i++) {
     var t = teams[i] || {};
     var nm = (t.name || '').replace(/"/g, '&quot;');
@@ -1426,6 +1426,7 @@ function buildStandingsEditor(gi) {
     h += '<div class="st-team-row">';
     h += '<span class="st-num">' + (i+1) + '</span>';
     h += '<input type="text" data-g="'+gi+'" data-i="'+i+'" data-f="name" value="'+nm+'" placeholder="Pair '+(i+1)+'">';
+    h += '<input type="number" data-g="'+gi+'" data-i="'+i+'" data-f="played" value="'+(t.played||0)+'" min="0">';
     h += '<input type="number" data-g="'+gi+'" data-i="'+i+'" data-f="wins" value="'+(t.wins||0)+'" min="0">';
     h += '<input type="number" data-g="'+gi+'" data-i="'+i+'" data-f="setsPlus" value="'+(t.setsPlus||0)+'" min="0" oninput="updateDiffs(this)">';
     h += '<input type="number" data-g="'+gi+'" data-i="'+i+'" data-f="setsMinus" value="'+(t.setsMinus||0)+'" min="0" oninput="updateDiffs(this)">';
