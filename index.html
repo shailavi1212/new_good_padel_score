@@ -155,6 +155,22 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 .fm-vs { font-family: 'Inter', sans-serif; font-size: 10px; color: var(--text-secondary); opacity: 0.3; }
 .fixture-empty { text-align: center; padding: 50px 20px; color: var(--text-secondary); opacity: 0.5; font-size: 13px; letter-spacing: 2px; }
 
+/* PLAYER FILTER */
+.player-filter-wrap { display: flex; justify-content: center; margin-bottom: 20px; }
+.player-filter-inner { display: flex; align-items: center; gap: 10px; background: rgba(11,28,45,0.9); border: 1px solid rgba(212,168,67,0.2); border-radius: var(--radius-lg); padding: 10px 16px; backdrop-filter: blur(20px); }
+.player-filter-label { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); opacity: 0.8; white-space: nowrap; }
+.player-filter-select { appearance: none; -webkit-appearance: none; background: rgba(7,14,24,0.8) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23D4A843'/%3E%3C/svg%3E") no-repeat right 12px center; border: 1px solid rgba(212,168,67,0.15); border-radius: var(--radius); color: var(--text-bright); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; padding: 8px 36px 8px 14px; cursor: pointer; outline: none; transition: border-color 0.3s; min-width: 200px; }
+.player-filter-select:focus { border-color: rgba(212,168,67,0.5); }
+.player-filter-select option { background: #0B1C2D; color: var(--text-bright); }
+.player-filter-clear { display: none; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid rgba(212,168,67,0.2); border-radius: 50%; background: rgba(212,168,67,0.08); cursor: pointer; transition: all 0.3s; }
+.player-filter-clear:hover { background: rgba(212,168,67,0.2); border-color: rgba(212,168,67,0.5); }
+.player-filter-clear svg { width: 12px; height: 12px; fill: var(--gold); }
+.player-filter-clear.visible { display: flex; }
+.player-schedule-view { display: none; }
+.player-schedule-view.active { display: block; }
+.player-match-group { margin-bottom: 8px; }
+.player-group-label { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 3px; color: var(--electric-blue); padding: 14px 20px 6px; opacity: 0.7; }
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .nav-brand { font-size: 14px; letter-spacing: 2px; padding: 12px 14px 12px 0; }
@@ -247,9 +263,29 @@ body::before { content: ''; position: fixed; inset: 0; background: radial-gradie
 <div class="page-section" id="page-schedule">
   <div class="page-title">SCHEDULE</div>
   <div class="page-subtitle">Fixtures &amp; Results</div>
-  <div class="group-tabs" id="schedGroupTabs"></div>
-  <div class="fixture-tabs" id="fixtureTabs"></div>
-  <div class="glass-panel" id="schedulePanel"></div>
+
+  <!-- Player Filter -->
+  <div class="player-filter-wrap">
+    <div class="player-filter-inner">
+      <span class="player-filter-label">&#128100; My Schedule</span>
+      <select class="player-filter-select" id="playerFilterSelect" onchange="onPlayerFilterChange(this.value)">
+        <option value="">— All Players —</option>
+      </select>
+      <div class="player-filter-clear" id="playerFilterClear" onclick="clearPlayerFilter()" title="Clear filter">
+        <svg viewBox="0 0 12 12"><path d="M10.5 1.5l-9 9M1.5 1.5l9 9" stroke="#D4A843" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Default view: group + fixture tabs -->
+  <div id="schedDefaultView">
+    <div class="group-tabs" id="schedGroupTabs"></div>
+    <div class="fixture-tabs" id="fixtureTabs"></div>
+    <div class="glass-panel" id="schedulePanel"></div>
+  </div>
+
+  <!-- Player-filtered view -->
+  <div class="player-schedule-view glass-panel" id="playerScheduleView"></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -379,8 +415,142 @@ function renderCurrentFixture() {
 scheduleRef.on('value', function(snap) {
   scheduleCache = snap.val() || {};
   renderCurrentFixture();
+  rebuildPlayerFilter();
 });
 initSchedGroupTabs(); renderFixtureTabs(); renderCurrentFixture();
+
+/* ========== PLAYER FILTER ========== */
+var activePlayerFilter = '';
+
+function getAllPlayers() {
+  var players = {};
+  var groups = ['group0','group1','group2'];
+  groups.forEach(function(gKey) {
+    var gData = scheduleCache[gKey] || {};
+    for (var fKey in gData) {
+      var fData = gData[fKey] || {};
+      var matches = fData.matches ? Object.values(fData.matches) : [];
+      matches.forEach(function(m) {
+        // Each team field may contain a pair name like "Alice / Bob" or "Alice & Bob"
+        [m.teamA, m.teamB].forEach(function(team) {
+          if (!team || !team.trim()) return;
+          // Try to split by common separators
+          var parts = team.split(/[\/&+,]/).map(function(p){ return p.trim(); }).filter(Boolean);
+          if (parts.length > 1) {
+            parts.forEach(function(p){ if(p) players[p.toLowerCase()] = p; });
+          } else {
+            players[team.trim().toLowerCase()] = team.trim();
+          }
+        });
+      });
+    }
+  });
+  return Object.values(players).sort(function(a,b){ return a.localeCompare(b); });
+}
+
+function rebuildPlayerFilter() {
+  var players = getAllPlayers();
+  var sel = document.getElementById('playerFilterSelect');
+  var current = sel.value;
+  sel.innerHTML = '<option value="">— All Players —</option>';
+  players.forEach(function(p) {
+    var opt = document.createElement('option');
+    opt.value = p;
+    opt.textContent = p;
+    if (p === current) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  if (activePlayerFilter) renderPlayerSchedule(activePlayerFilter);
+}
+
+function onPlayerFilterChange(val) {
+  activePlayerFilter = val;
+  var clearBtn = document.getElementById('playerFilterClear');
+  var defaultView = document.getElementById('schedDefaultView');
+  var playerView = document.getElementById('playerScheduleView');
+  if (val) {
+    clearBtn.classList.add('visible');
+    defaultView.style.display = 'none';
+    playerView.classList.add('active');
+    renderPlayerSchedule(val);
+  } else {
+    clearPlayerFilter();
+  }
+}
+
+function clearPlayerFilter() {
+  activePlayerFilter = '';
+  document.getElementById('playerFilterSelect').value = '';
+  document.getElementById('playerFilterClear').classList.remove('visible');
+  document.getElementById('schedDefaultView').style.display = '';
+  document.getElementById('playerScheduleView').classList.remove('active');
+  document.getElementById('playerScheduleView').innerHTML = '';
+}
+
+function teamContainsPlayer(teamName, playerName) {
+  if (!teamName || !playerName) return false;
+  var parts = teamName.split(/[\/&+,]/).map(function(p){ return p.trim().toLowerCase(); });
+  var pLower = playerName.toLowerCase();
+  if (parts.length > 1) {
+    return parts.some(function(p){ return p === pLower; });
+  }
+  return teamName.trim().toLowerCase() === pLower;
+}
+
+function renderPlayerSchedule(playerName) {
+  var panel = document.getElementById('playerScheduleView');
+  var gNames = ['A','B','C'];
+  var allMatches = [];
+  var groups = ['group0','group1','group2'];
+  groups.forEach(function(gKey, gi) {
+    var gData = scheduleCache[gKey] || {};
+    for (var fIdx = 0; fIdx < 7; fIdx++) {
+      var fData = (gData['fixture'+fIdx] || {});
+      var matches = fData.matches ? Object.values(fData.matches) : [];
+      matches.forEach(function(m) {
+        if (teamContainsPlayer(m.teamA, playerName) || teamContainsPlayer(m.teamB, playerName)) {
+          allMatches.push({ m: m, group: gi, fixture: fIdx });
+        }
+      });
+    }
+  });
+
+  if (!allMatches.length) {
+    panel.innerHTML = '<div class="fixture-empty">No games found for <strong>' + playerName + '</strong></div>';
+    return;
+  }
+
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var h = '<div class="fixture-group-label" style="font-size:16px;padding:20px 20px 4px;color:var(--gold);">&#128100; ' + playerName + '</div>';
+  allMatches.forEach(function(entry) {
+    var m = entry.m;
+    var hasScore = m.scoreA !== undefined && m.scoreA !== '' && m.scoreB !== undefined && m.scoreB !== '';
+    var dateStr = '';
+    if (m.date) {
+      var parts = m.date.split('-');
+      if (parts.length === 3) dateStr = parseInt(parts[2]) + ' ' + months[parseInt(parts[1])-1] + ' ' + parts[0];
+      else dateStr = m.date;
+    }
+    if (m.time) dateStr += (dateStr ? '  \u00B7  ' : '') + m.time;
+    var isA = teamContainsPlayer(m.teamA, playerName);
+    var highlight = isA ? 'color:var(--electric-blue-bright);font-weight:700;' : '';
+    var highlightB = !isA ? 'color:var(--electric-blue-bright);font-weight:700;' : '';
+    h += '<div class="fixture-match">';
+    h += '<div class="fm-datetime" style="display:flex;justify-content:space-between;align-items:center;">';
+    h += '<span>' + (dateStr || 'Date TBD') + '</span>';
+    h += '<span style="font-size:9px;letter-spacing:1px;color:var(--text-secondary);opacity:0.5;">GROUP ' + gNames[entry.group] + ' · FIXTURE ' + (entry.fixture+1) + '</span>';
+    h += '</div>';
+    h += '<div class="fm-teams-row">';
+    h += '<div class="fm-team" style="' + highlight + '">' + (m.teamA || 'TBD') + '</div>';
+    h += '<div class="fm-score-box">';
+    if (hasScore) h += '<span class="fm-score">' + m.scoreA + ' \u2013 ' + m.scoreB + '</span>';
+    else h += '<span class="fm-score pending">vs</span>';
+    h += '</div>';
+    h += '<div class="fm-team away" style="' + highlightB + '">' + (m.teamB || 'TBD') + '</div>';
+    h += '</div></div>';
+  });
+  panel.innerHTML = h;
+}
 
 /* ========== LIVE MATCH ========== */
 var prevScoreA = null, prevScoreB = null, currentStreamURL = '';
